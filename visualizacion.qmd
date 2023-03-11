@@ -1,0 +1,68 @@
+---
+title: "Tarea visualización"
+author: "Christhoper Carrasco"
+format: html
+editor: visual
+---
+
+## Replica de la figura compuesta
+
+```{r}
+library(ggpubr)
+data("mtcars")
+mtcars$name= row.names(mtcars)
+mtcars$cyl= as.factor(mtcars$cyl)
+a <-ggbarplot(mtcars, x = "name", y = "mpg", fill = "cyl",  
+                color = "white",  palette = "jco", 
+                sort.val = "asc", sort.by.groups = TRUE,
+                x.text.angle = 90) + font("x.text", size = 8)
+
+####
+set.seed(42)
+n <- 1000
+x <- runif(n) * 3
+y <- x * sin(1/x) + rnorm(n) / 25
+
+df <- data.frame(x = x, y = y)
+
+b <- ggplot(df, aes(x, y)) + geom_point(alpha = 0.4, col = "navyblue") +
+    geom_smooth(se = FALSE) + scale_x_continuous(limits = c(0, 0.5)) +
+    scale_y_continuous(limits = c(-0.3, 0.4)) + theme_bw()
+
+###
+c <- ggdotplot(ToothGrowth, x = "dose", y = "len",
+                color = "dose", palette = "jco", binwidth = 1)+ theme_classic()
+
+
+##
+d <- ggscatter(mtcars, x = "wt", y = "mpg", add = "reg.line", conf.int = TRUE,
+               color = "cyl", palette = "jco", shape = "cyl") +
+  stat_cor(aes(color = cyl), label.x.npc = "centre", label.y.npc="top")
+
+##
+e <-ggplot(faithfuld, aes(eruptions, waiting)) + 
+  geom_raster(aes(fill = density)) + theme_classic() +
+  scale_fill_gradientn(colours = heat.colors(10, rev = TRUE), na.value = "white")
+
+##
+f <-ggplot(diamonds, aes(depth, fill = cut, colour = cut)) +
+  geom_density(alpha = 0.2, na.rm = TRUE) + 
+  xlim(58, 68) +  theme_classic() + theme(legend.position = "bottom")
+
+
+
+replica <- ggarrange(a,ggarrange(f,nrow = 1,labels = 'F',ggarrange(b,c,d,e, nrow = 2, ncol = 2, labels = c('B','C','D','E'))),nrow= 2, labels ='A' )
+replica
+
+
+```
+
+## Réplica de la figura embebida
+
+```{r}
+```
+
+```{r}
+#| echo: false
+2 * 2
+```
