@@ -60,9 +60,35 @@ replica
 ## Réplica de la figura embebida
 
 ```{r}
-```
+library(readr)
+library(RCurl)
+library(dplyr)
+library(ggplot2)
+library(ggpubr)
+gapminder <- read.csv("data/gapminder.csv")
+gapminder <- read.table(file = "data/gapminder.csv", sep = ';', header = TRUE, stringsAsFactors = FALSE )
 
-```{r}
-#| echo: false
-2 * 2
+
+fig <- gapminder %>% filter(gapminder$year >= 2000 , gapminder$year <= 2007) %>% ggplot(aes(x= gdpPercap, y= lifeExp , color= continent)) + geom_point()+
+  labs(x = ' Ingreso promedio (USD)', y= 'Expectativa de vida al nacer (años)', title = "Esperanza de vida debido al ingreso promedio - 2007", 
+       color= "Continente:",
+       caption = "Fuente : Gapminder")+
+  theme(legend.position = "bottom",
+        legend.title = element_text(colour = "black", size = 10),
+        panel.background = element_rect(fill = "white", colour = "grey80"),
+        panel.grid.major = element_line(colour = "grey80"))
+
+# Sobreponer figura
+
+fig2 <- gapminder %>% filter(gapminder$year >= 2000 , gapminder$year <= 2007) %>% ggplot(aes(x= gdpPercap, y= lifeExp, color= continent)) +
+  geom_point(alpha= 0.3)+ scale_x_continuous(limits = c(6000,8000))+ scale_y_continuous(limits = c(65,80)) + theme_bw()
+
+
+
+fig + annotation_custom(ggplotGrob(fig2), xmin = 30000, xmax = 50000, ymin = 40, ymax = 65)
+
+
+
+
+
 ```
